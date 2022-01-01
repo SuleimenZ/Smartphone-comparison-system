@@ -1,0 +1,11 @@
+name:
+brand:
+releaseDate:
+weight:
+resolution:
+dimensions:
+chipset:
+storage:
+RAM:
+color:
+battery:
