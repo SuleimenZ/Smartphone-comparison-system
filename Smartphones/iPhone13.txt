@@ -7,4 +7,5 @@ dimensions:146.7x71.5x7.7
 chipset:Apple A15 Bionic
 storage:512
 RAM:4
-color:blue
+color:Blue
+battery:3240
