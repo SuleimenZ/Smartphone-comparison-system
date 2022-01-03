@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class SCS {
@@ -98,40 +99,40 @@ public class SCS {
                         if(i == 0){
                             switch (r){
                                 case 0 ->
-                                        System.out.print("Name" + new String(new char[tableCellWidth -4-1]).replace("\0", " ") + "|");
+                                        System.out.print("Name" + repeatingString(" ",tableCellWidth - 4 - 1) + "|");
                                 case 1 ->
-                                        System.out.print("Brand" + new String(new char[tableCellWidth -5-1]).replace("\0", " ") + "|");
+                                        System.out.print("Brand" + repeatingString(" ",tableCellWidth - 5 - 1) + "|");
                                 case 2 ->
-                                        System.out.print("Color" + new String(new char[tableCellWidth -5-1]).replace("\0", " ") + "|");
+                                        System.out.print("Color" + repeatingString(" ",tableCellWidth - 5 - 1) + "|");
                                 case 3 ->
-                                        System.out.print("Storage" + new String(new char[tableCellWidth -7-1]).replace("\0", " ") + "|");
+                                        System.out.print("Storage" + repeatingString(" ",tableCellWidth - 7 - 1) + "|");
                                 case 4 ->
-                                        System.out.print("RAM" + new String(new char[tableCellWidth -3-1]).replace("\0", " ") + "|");
+                                        System.out.print("RAM" + repeatingString(" ",tableCellWidth - 3 - 1) + "|");
                                 case 5 ->
-                                        System.out.print("Battery" + new String(new char[tableCellWidth -7-1]).replace("\0", " ") + "|");
+                                        System.out.print("Battery" + repeatingString(" ",tableCellWidth - 7 - 1) + "|");
                                 case 6 ->
-                                        System.out.print("Chipset" + new String(new char[tableCellWidth -7-1]).replace("\0", " ") + "|");
+                                        System.out.print("Chipset" + repeatingString(" ",tableCellWidth - 7 - 1) + "|");
                                 case 7 ->
-                                        System.out.print("Resolution" + new String(new char[tableCellWidth -10-1]).replace("\0", " ") + "|");
+                                        System.out.print("Resolution" + repeatingString(" ",tableCellWidth - 10 - 1) + "|");
                                 case 8 ->
-                                        System.out.print("Dimensions" + new String(new char[tableCellWidth -10-1]).replace("\0", " ") + "|");
+                                        System.out.print("Dimensions" + repeatingString(" ",tableCellWidth - 10 - 1) + "|");
                                 case 9 ->
-                                        System.out.print("Weight" + new String(new char[tableCellWidth -6-1]).replace("\0", " ") + "|");
+                                        System.out.print("Weight" + repeatingString(" ",tableCellWidth - 6 - 1) + "|");
                                 case 10 ->
-                                        System.out.print("Release" + new String(new char[tableCellWidth -7-1]).replace("\0", " ") + "|");
+                                        System.out.print("Release" + repeatingString(" ",tableCellWidth - 7 - 1) + "|");
                                 default ->
-                                        System.out.print(new String(new char[tableCellWidth -1]).replace("\0", " ") + "|");
+                                        System.out.print(repeatingString(" ",tableCellWidth - 1) + "|");
                             }
                         }
                         else if(i == 1){
-                            getSpecificSmartphoneInfo(firstSelected, r, tableCellWidth);
+                            printSpecificSmartphoneInfo(firstSelected, r);
                         }
                         else {
-                            getSpecificSmartphoneInfo(secondSelected, r, tableCellWidth);
+                            printSpecificSmartphoneInfo(secondSelected, r);
                         }
                     }
                     else{
-                        System.out.print(new String(new char[tableCellWidth -1]).replace("\0", " ") + "|");
+                        System.out.print(repeatingString(" ",tableCellWidth - 1) + "|");
                     }
                 }
                 System.out.println();
@@ -140,70 +141,101 @@ public class SCS {
         //printing last line
         System.out.print("+");
         for(int i = 0; i < smartphones + 1; i++) {
-            System.out.print(new String(new char[tableCellWidth -1]).replace("\0", "-") + "+");
+            System.out.print(repeatingString("-",tableCellWidth - 1) + "+");
         }
     }
-    //this method is created to improve printComparisonSheet readability
-    private void getSpecificSmartphoneInfo(Smartphone selectedSmartphone, int row, int generalWidth) {
+
+    private void printSpecificSmartphoneInfo(Smartphone selectedSmartphone, int row) {
+        //it's possible to use only one comparison tool, but IDE says raw use of parameterized class is bad or something
+        //either I coded generic class badly or I just understand use case of generic classes incorrectly
+        ComparisonTool<Integer> integerCT = new ComparisonTool<>();
+        ComparisonTool<Double> doubleCT = new ComparisonTool<>();
         switch (row){
             case 0 -> {
                 String content = selectedSmartphone.getName();
-                int spaces = generalWidth - content.length();
-                System.out.print(content + new String(new char[spaces-1]).replace("\0", " ") + "|");
+                int spaces = tableCellWidth - content.length();
+                System.out.print(content + repeatingString(" ",spaces - 1) + "|");
             }
             case 1 -> {
                 String content = selectedSmartphone.getBrand();
-                int spaces = generalWidth - content.length();
-                System.out.print(content + new String(new char[spaces-1]).replace("\0", " ") + "|");
+                int spaces = tableCellWidth - content.length();
+                System.out.print(content + repeatingString(" ",spaces - 1) + "|");
             }
             case 2 -> {
                 String content = selectedSmartphone.getColor();
-                int spaces = generalWidth - content.length();
-                System.out.print(content + new String(new char[spaces-1]).replace("\0", " ") + "|");
+                int spaces = tableCellWidth - content.length();
+                System.out.print(content + repeatingString(" ",spaces - 1) + "|");
             }
             case 3 -> {
+                String filler = Objects.equals(
+                        integerCT.compare(firstSelected.getStorage(), secondSelected.getStorage()),
+                        selectedSmartphone.getStorage()) ? "<" : " ";
                 String content = selectedSmartphone.getStorage().toString() + " GB";
-                int spaces = generalWidth - content.length();
-                System.out.print(content + new String(new char[spaces-1]).replace("\0", " ") + "|");
+                int spaces = tableCellWidth - content.length();
+                System.out.print(content + repeatingString(filler,spaces - 1) + "|");
             }
             case 4 -> {
+                String filler = Objects.equals(
+                        integerCT.compare(firstSelected.getRAM(), secondSelected.getRAM()),
+                        selectedSmartphone.getRAM()) ? "<" : " ";
                 String content = selectedSmartphone.getRAM().toString() + " GB";
-                int spaces = generalWidth - content.length();
-                System.out.print(content + new String(new char[spaces-1]).replace("\0", " ") + "|");
+                int spaces = tableCellWidth - content.length();
+                System.out.print(content + repeatingString(filler,spaces - 1) + "|");
             }
             case 5 -> {
+                String filler = Objects.equals(
+                        integerCT.compare(firstSelected.getBattery(), secondSelected.getBattery()),
+                        selectedSmartphone.getBattery()) ? "<" : " ";
                 String content = selectedSmartphone.getBattery().toString() + "mAh";
-                int spaces = generalWidth - content.length();
-                System.out.print(content + new String(new char[spaces-1]).replace("\0", " ") + "|");
+                int spaces = tableCellWidth - content.length();
+                System.out.print(content + repeatingString(filler,spaces - 1) + "|");
             }
             case 6 -> {
                 String content = selectedSmartphone.getChipset();
-                int spaces = generalWidth - content.length();
-                System.out.print(content + new String(new char[spaces-1]).replace("\0", " ") + "|");
+                int spaces = tableCellWidth - content.length();
+                System.out.print(content + repeatingString(" ",spaces - 1) + "|");
             }
             case 7 -> {
+                String filler = Objects.equals(
+                        integerCT.compare(firstSelected.getResolutionX() * firstSelected.getResolutionY(),
+                                    secondSelected.getResolutionX() * secondSelected.getResolutionY()),
+                        selectedSmartphone.getResolutionX() * selectedSmartphone.getResolutionY()) ? "<" : " ";
                 String content = selectedSmartphone.getResolutionX() + "x" + selectedSmartphone.getResolutionY() + "px";
-                int spaces = generalWidth - content.length();
-                System.out.print(content + new String(new char[spaces-1]).replace("\0", " ") + "|");
+                int spaces = tableCellWidth - content.length();
+                System.out.print(content + repeatingString(filler,spaces - 1) + "|");
             }
             case 8 -> {
+                String filler = Objects.equals(
+                        doubleCT.compare(firstSelected.getWidth() * firstSelected.getHeight() * firstSelected.getDepth(),
+                                    secondSelected.getWidth() * secondSelected.getHeight() * secondSelected.getDepth()),
+                        selectedSmartphone.getWidth() * selectedSmartphone.getHeight() * selectedSmartphone.getDepth()) ? "<" : " ";
                 String content = selectedSmartphone.getWidth() + "x" + selectedSmartphone.getHeight() + "x" + selectedSmartphone.getDepth() + "mm";
-                int spaces = generalWidth - content.length();
-                System.out.print(content + new String(new char[spaces-1]).replace("\0", " ") + "|");
+                int spaces = tableCellWidth - content.length();
+                System.out.print(content + repeatingString(filler,spaces - 1) + "|");
             }
             case 9 -> {
+                String filler = Objects.equals(
+                        doubleCT.compare(firstSelected.getWeight(), secondSelected.getWeight()),
+                        selectedSmartphone.getWeight()) ? " " : "<";
                 String content = selectedSmartphone.getWeight().toString() + "g";
-                int spaces = generalWidth - content.length();
-                System.out.print(content + new String(new char[spaces-1]).replace("\0", " ") + "|");
+                int spaces = tableCellWidth - content.length();
+                System.out.print(content + repeatingString(filler,spaces - 1) + "|");
             }
             case 10 -> {
+                String filler = Objects.equals(
+                        integerCT.compare(firstSelected.getReleaseDate(), secondSelected.getReleaseDate()),
+                        selectedSmartphone.getReleaseDate()) ? "<" : " ";
                 String content = selectedSmartphone.getReleaseDate().toString();
-                int spaces = generalWidth - content.length();
-                System.out.print(content + new String(new char[spaces-1]).replace("\0", " ") + "|");
+                int spaces = tableCellWidth - content.length();
+                System.out.print(content + repeatingString(filler,spaces - 1) + "|");
             }
             default ->
-                    System.out.print(new String(new char[generalWidth-1]).replace("\0", " ") + "|");
+                    System.out.print(repeatingString(" ",tableCellWidth - 1) + "|");
         }
+    }
+
+    private String repeatingString(String str, int num){
+        return new String(new char[num]).replace("\0", str);
     }
 
     public void printSmartphoneList(){
